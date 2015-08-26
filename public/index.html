@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="https://code.angularjs.org/1.4.3/angular-sanitize.min.js"></script>
+    <script type="text/javascript" src="javascripts/newapp.js"></script>
+</head>
+<body>
+<div ng-controller="mainCtrl">
+    <input type="text" ng-model="student_name"/>
+    <br>
+
+    <h1>{{student_name}}</h1>
+
+    <div ng-show="student_name=='Paco'">
+        You are a boss.
+    </div>
+    <br>
+    <input type="text" ng-model="amount"/>
+    <br>
+<span>{{amount | currency}}
+</span>
+    <br/>
+    <input type="text" ng-model="searcher"/>
+
+    <div ng-repeat="fruit in fruits | filter:searcher">
+        <li>{{fruit}}</li>
+    </div>
+    <select ng-model="selectedOption" ng-options="pet as pet.name for pet in pets track by pet.id">
+    </select>
+
+    <h3>{{selectedOption.name}}</h3><br/>
+    <input type="text" ng-model="myTry"><br/>
+
+    <h3>YELLING: {{myTry | uppercase}}</h3>
+
+    <h3>whispering: {{myTry | lowercase}}</h3>
+    <label>How many digits of PI do you want?
+        <select ng-model="piDisplay"
+                ng-options="digits as digits.val for digits in piDigits track by digits.id"></select>
+    </label><br/>
+    Here you go, the first
+    <ng-pluralize count="piDisplay.val"
+                  when="{'1': 'digit',
+                'other': '{} digits'}"></ng-pluralize>
+    of pi<br/>
+    <h4>{{ 3.1415926536 | number:piDisplay.val}}</h4>
+    <label>How much did your meal cost?
+        <input type="text" ng-model="mealAmount"/>
+    </label>
+    <label>How much do you want to tip?
+        <select ng-model="selectedTip" ng-options="tip as tip.amount for tip in tips track by tip.id"></select>
+    </label>
+
+    <h2>Subtotal {{mealAmount | currency}}</h2>
+
+    <h2>Tip {{mealAmount * selectedTip.multiplier | currency}}</h2>
+</div>
+<div ng-controller="exerciseCtl">
+    {{ FavColor}}
+    <h3>{{secondsInCentury | number:0}}</h3>
+    {{ rightNow }}
+    <ul>
+        <li ng-repeat="suit in suits" ng-bind-html="suit">
+            {{ suit }}
+        </li>
+    </ul>
+    <ul>
+        <li ng-repeat="(key, val) in keys">
+            {{key}}
+        </li>
+    </ul>
+    <div ng-show="false">abcd</div>
+    <style>
+        .bad {
+            color: red;
+        }
+
+        .good {
+            color: green;
+        }
+    </style>
+    <input type="password" ng-model="password">
+
+    <div ng-class="{bad: password.length < 6, good: password.length >= 6}">Your password is {{password.length}}
+        characters
+    </div>
+    <br/>
+    <input type="submit" ng-show="password.length >=6">
+
+    <h2 ng-hide="password.length >= 6">Password is invalid</h2>
+</div>
+<style>
+    .sale {
+        color: gold;
+    }
+</style>
+<div ng-controller="cameraController">
+    <select ng-model="sortValue" ng-options="selection as selection.label for selection in sorts track by selection.id"
+            ng-change="reSort()"></select>
+    <ul style="list-style-type: none">
+        <li ng-repeat="item in stock">
+            <h3>{{item.title}}</h3>
+            <h4 ng-class="{sale: item.onSale}">Price: {{item.price | currency}}<span
+                    ng-show="item.onSale"> ON SALE!</span></h4>
+            <h4>Rating: {{item.rating}}</h4>
+            <img ng-srcset="{{item.image}}"/>
+        </li>
+    </ul>
+</div>
+<div ng-controller="ex6Controller">
+    <input type="text" ng-model="reverser">
+    <button ng-click="reverse()">Reverse It</button>
+    <h4>Your backWord is {{reversed}}</h4>
+    <style>
+        .buttondiv {
+            float: left;
+            height: 200px;
+            width: 200px;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+        .won {
+            background-color: green;
+        }
+
+        .lost {
+            background-color: red;
+        }
+
+        .inprogress {
+            background-color: blue;
+        }
+    </style>
+    <div>
+        <div class="buttondiv" ng-class="player1Status()" ng-click="score1()">
+            <h3>player 1</h3>
+
+            <h3>{{player1Score}}</h3>
+
+            <h3 ng-show="serving() === 1">serving</h3>
+        </div>
+        <div class="buttondiv" ng-class="player2Status()" ng-click="score2()">
+            <h3>player 2</h3>
+
+            <h3>{{player2Score}}</h3>
+
+            <h3 ng-show="serving() === 2">serving</h3>
+        </div>
+    </div>
+    <div style="clear:both;">
+        <style>
+            .contacts {table-layout: fixed; width: 500px; white-space: nowrap;}
+            .contacts td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .col_name {width: 30%;}
+            .col_email{width: 40%;}
+            .col_phone{width: 30%;}
+            label   {font-weight: bold; padding-right:2px;}
+            button {background-color: blue; border-radius: 5px;}
+            tr:nth-child(even) {background-color: #eeeeee;}
+        </style>
+        <h2>Contact Manager</h2>
+
+        <div>
+            <label>name<input ng-model="newContact.name" type="text"></label>
+            <label>email<input type="text" ng-model="newContact.email"></label>
+            <label>phone<input type="text" ng-model="newContact.phone"></label>
+            <button ng-click="addContact()">Add Contact</button>
+        </div>
+        <label>search<input type="text" ng-model="searchBox"></label>
+        <table class="contacts">
+            <thead>
+            <tr>
+                <td class="col_name">Name</td>
+                <td class="col_email">Email</td>
+                <td class="col_phone">Phone</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="contact in contacts | filter: searchBox">
+                <td >{{contact.name}}</td>
+                <td>{{contact.email}}</td>
+                <td>{{contact.phone}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
